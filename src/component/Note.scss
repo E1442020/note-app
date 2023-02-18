@@ -1,0 +1,62 @@
+.addNote-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &.activeNote{
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        padding: 10px;
+        border:none;
+        border-radius: 7px; 
+       margin-bottom: 20px;
+       background-color: aqua;
+    }
+    
+    .existing-note-item{
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        padding: 10px;
+        border:none;
+        border-radius: 7px; 
+       margin-bottom: 20px;
+        &:hover{
+            cursor: pointer;
+        }
+       
+        .title-icon{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        
+            h3{
+                word-break: break-word;
+                margin-bottom: 10px;
+    
+            }
+        }
+       
+        p{
+            color: gray;
+            word-break: break-word;
+        }
+        span{
+            display: flex;
+            justify-content: end;
+        }
+        
+    }
+}
+
+.preview-app-container{
+    padding: 20px;
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        input, textarea{
+            outline: none;
+            border: none;
+            background-color: #F8F9FA;
+            font-size: larger;
+            
+        }
+    }
+}

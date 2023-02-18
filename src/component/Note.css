@@ -1,0 +1,55 @@
+.addNote-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.addNote-container.activeNote {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 10px;
+  border: none;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  background-color: aqua;
+}
+.addNote-container .existing-note-item {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 10px;
+  border: none;
+  border-radius: 7px;
+  margin-bottom: 20px;
+}
+.addNote-container .existing-note-item:hover {
+  cursor: pointer;
+}
+.addNote-container .existing-note-item .title-icon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.addNote-container .existing-note-item .title-icon h3 {
+  word-break: break-word;
+  margin-bottom: 10px;
+}
+.addNote-container .existing-note-item p {
+  color: gray;
+  word-break: break-word;
+}
+.addNote-container .existing-note-item span {
+  display: flex;
+  justify-content: end;
+}
+
+.preview-app-container {
+  padding: 20px;
+}
+.preview-app-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.preview-app-container form input, .preview-app-container form textarea {
+  outline: none;
+  border: none;
+  background-color: #F8F9FA;
+  font-size: larger;
+}/*# sourceMappingURL=Note.css.map */
