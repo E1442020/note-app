@@ -1,4 +1,4 @@
-import  { Fragment, useRef,useState } from "react";
+import { Fragment, useRef, useState, useEffect } from "react";
 import "./Note.css";
 import {
   AppShell,
@@ -30,7 +30,7 @@ export default function Note() {
   const [remove, setRemove] = useState(false);
   const titleFocus = useRef<HTMLInputElement>(null);
   const contentFocus = useRef<HTMLTextAreaElement>(null);
-  const[noteArr,setNoteArr] = useState<NOTE[]>([]);
+  const [noteArr, setNoteArr] = useState<NOTE[]>([]);
 
   //get Note from localStorage
 
@@ -42,7 +42,9 @@ export default function Note() {
     return JSON.parse(info);
   };
 
-  setNoteArr(checkNoteInfo());
+  useEffect(() => {
+    setNoteArr(checkNoteInfo());
+  }, []);
 
   //set Note to localStorage
 
@@ -83,25 +85,25 @@ export default function Note() {
   //Make inputs Not disable
 
   const makeInputNotDisable = () => {
-    if(titleFocus.current){titleFocus.current.focus();}
+    if (titleFocus.current) {
+      titleFocus.current.focus();
+    }
 
     setAddNote(true);
-   setOpened(false);
-//    if(contentFocus.current){contentFocus.current.focus()}
-   
-   
-   
+    setOpened(false);
+    //    if(contentFocus.current){contentFocus.current.focus()}
   };
 
   //UpdateNote
   const takeNoteItemToInputToUpdate = (note: NOTE) => {
-    if(titleFocus.current){titleFocus.current.focus();}
-     setUpdateCurrentNote(true);
+    if (titleFocus.current) {
+      titleFocus.current.focus();
+    }
+    setUpdateCurrentNote(true);
     setAddNote(true);
     setActiveNote(true);
     setOpened(false);
-//    if(contentFocus.current){contentFocus.current.focus()}
-   
+    //    if(contentFocus.current){contentFocus.current.focus()}
 
     setContentValue(note.content);
     setTitleValue(note.title);
@@ -121,24 +123,21 @@ export default function Note() {
     setUpdateCurrentNote(false);
     setTitleValue("");
     setContentValue("");
-};
+  };
 
   //RemoveNote
   const removeNote = (note: any) => {
-    const index = noteArr.indexOf(note);
+    const newArr = [...noteArr];
+    const index = newArr.indexOf(note);
     if (index > -1) {
-      // only splice array when item is found
-      noteArr.splice(index, 1);
-       // 2nd parameter means remove one item only
+      newArr.splice(index, 1);
+      setNoteArr(newArr);
     }
-   
+
     setNoteToLocalStorage();
 
-    setRemove(true)
-
+   
   };
- 
-
 
   return (
     <AppShell
@@ -160,15 +159,13 @@ export default function Note() {
           width={{ sm: 200, lg: 400 }}
         >
           <div className="addNote-container">
-            <Button onClick={makeInputNotDisable} >Add New Note</Button>
+            <Button onClick={makeInputNotDisable}>Add New Note</Button>
             <div className="existing-note">
-                {noteArr.length==0&&'No Note Available'}
+              {noteArr.length == 0 && "No Note Available"}
               {noteArr.map((note: NOTE) => {
                 return (
                   <Fragment key={note.id}>
-                    <div
-                      className="existing-note-item"
-                    >
+                    <div className="existing-note-item">
                       <div className="title-icon">
                         <h3>
                           {note.title.length <= 20
@@ -180,8 +177,7 @@ export default function Note() {
                           onClick={() => removeNote(note)}
                         />
                       </div>
-                      <p onClick={() => takeNoteItemToInputToUpdate(note)}
->
+                      <p onClick={() => takeNoteItemToInputToUpdate(note)}>
                         {note.content.length <= 30
                           ? note.content
                           : `${note.content.slice(0, 30)}...`}
@@ -199,7 +195,7 @@ export default function Note() {
       }
       footer={
         <Footer height={60} p="md">
-          Developed By Eman Masoud 
+          Developed By Eman Masoud
         </Footer>
       }
       header={
@@ -240,7 +236,6 @@ export default function Note() {
             ref={contentFocus}
             onChange={(e) => setContentValue(e.target.value)}
             disabled={!addNote}
-            
           />
           <Button type="submit">Save Note</Button>
           <Button disabled={!updateCurrentNote} onClick={UpdateNote}>
