@@ -51,7 +51,7 @@ export default function Note() {
   let setNoteToLocalStorage = () => {
     localStorage.setItem("noteInfo", JSON.stringify(noteArr));
   };
-
+setNoteToLocalStorage()
   //Add New Note
 
   const addNewNote = () => {
@@ -107,8 +107,10 @@ export default function Note() {
       .then((result) => {
         if (result.isConfirmed) {
           setNoteArr([]);
-          localStorage.clear();
+          console.log(noteArr)
+          setNoteToLocalStorage() ;
           setActiveDot(false);
+          setOpened(true)
           swalWithBootstrapButtons.fire(
             "Deleted!",
             "Your file has been deleted.",
@@ -126,14 +128,12 @@ export default function Note() {
         }
       });
     setOpened(false);
-    //    if(contentFocus.current){contentFocus.current.focus()}
   };
 
   //UpdateNote
   const takeNoteItemToInputToUpdate = (note: NOTE) => {
     setUpdateCurrentNote(true);
     setOpened(false);
-    //    if(contentFocus.current){contentFocus.current.focus()}
     setActiveDot(false);
     setContentValue(note.content);
     setTitleValue(note.title);
@@ -204,7 +204,6 @@ export default function Note() {
         }
       });
 
-    setNoteToLocalStorage();
   };
 
   return (
