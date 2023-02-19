@@ -48,8 +48,8 @@ export default function Note() {
 
   //set Note to localStorage
 
-  let setNoteToLocalStorage = () => {
-    localStorage.setItem("noteInfo", JSON.stringify(noteArr));
+  let setNoteToLocalStorage = (noteArray:NOTE[]) => {
+    localStorage.setItem("noteInfo", JSON.stringify(noteArray));
   };
 // setNoteToLocalStorage()
   //Add New Note
@@ -69,7 +69,7 @@ export default function Note() {
     };
 
     noteArr.push(newNote);
-    setNoteToLocalStorage();
+    setNoteToLocalStorage(noteArr);
     setActiveDot(true);
   };
 
@@ -105,10 +105,11 @@ export default function Note() {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          setNoteArr([]);
-          localStorage.clear()
+          let newArr=[...noteArr]
+          newArr=[];
+          setNoteArr(() => [...newArr]);
           console.log(noteArr)
-          setNoteToLocalStorage() ;
+          setNoteToLocalStorage(newArr) ;
           setActiveDot(false);
           setOpened(true);
           setTitleValue("");
@@ -152,7 +153,7 @@ export default function Note() {
         console.log("yes");
         note.title = titleValue;
         note.content = contentValue;
-        setNoteToLocalStorage();
+        setNoteToLocalStorage(noteArr);
       }
     });
     setUpdateCurrentNote(false);
@@ -193,7 +194,7 @@ export default function Note() {
             setTitleValue("");
             setContentValue("");
             setUpdateCurrentNote(false);
-            setNoteToLocalStorage();
+            setNoteToLocalStorage(newArr);
           }
           swalWithBootstrapButtons.fire(
             "Deleted!",
