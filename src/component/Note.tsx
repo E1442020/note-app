@@ -106,6 +106,7 @@ export default function Note() {
       .then((result) => {
         if (result.isConfirmed) {
           setNoteArr([]);
+          localStorage.clear()
           console.log(noteArr)
           setNoteToLocalStorage() ;
           setActiveDot(false);
