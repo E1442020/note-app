@@ -1,4 +1,6 @@
 import { Fragment, useRef, useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { BsDot } from "react-icons/bs";
 import "./Note.css";
 import {
   AppShell,
@@ -23,14 +25,11 @@ export default function Note() {
   const [opened, setOpened] = useState(false);
   const [titleValue, setTitleValue] = useState("");
   const [contentValue, setContentValue] = useState("");
-  const [addNote, setAddNote] = useState(false);
   const [updateCurrentNote, setUpdateCurrentNote] = useState(false);
-  const [activeNote, setActiveNote] = useState(false);
   const [noteId, setNoteId] = useState(0);
-  const [remove, setRemove] = useState(false);
-  const titleFocus = useRef<HTMLInputElement>(null);
-  const contentFocus = useRef<HTMLTextAreaElement>(null);
   const [noteArr, setNoteArr] = useState<NOTE[]>([]);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const [activeDot, setActiveDot] = useState(false);
 
   //get Note from localStorage
 
@@ -43,6 +42,7 @@ export default function Note() {
   };
 
   useEffect(() => {
+    titleRef.current?.focus();
     setNoteArr(checkNoteInfo());
   }, []);
 
@@ -70,6 +70,7 @@ export default function Note() {
 
     noteArr.push(newNote);
     setNoteToLocalStorage();
+    setActiveDot(true);
   };
 
   //submitHandler
@@ -84,27 +85,56 @@ export default function Note() {
 
   //Make inputs Not disable
 
-  const makeInputNotDisable = () => {
-    if (titleFocus.current) {
-      titleFocus.current.focus();
-    }
+  const deleteAllNotes = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: true,
+    });
 
-    setAddNote(true);
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          setNoteArr([]);
+          localStorage.clear();
+          setActiveDot(false);
+          swalWithBootstrapButtons.fire(
+            "Deleted!",
+            "Your file has been deleted.",
+            "success"
+          );
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your imaginary file is safe :)",
+            "error"
+          );
+        }
+      });
     setOpened(false);
     //    if(contentFocus.current){contentFocus.current.focus()}
   };
 
   //UpdateNote
   const takeNoteItemToInputToUpdate = (note: NOTE) => {
-    if (titleFocus.current) {
-      titleFocus.current.focus();
-    }
     setUpdateCurrentNote(true);
-    setAddNote(true);
-    setActiveNote(true);
     setOpened(false);
     //    if(contentFocus.current){contentFocus.current.focus()}
-
+    setActiveDot(false);
     setContentValue(note.content);
     setTitleValue(note.title);
     setNoteId(note.id);
@@ -127,16 +157,54 @@ export default function Note() {
 
   //RemoveNote
   const removeNote = (note: any) => {
-    const newArr = [...noteArr];
-    const index = newArr.indexOf(note);
-    if (index > -1) {
-      newArr.splice(index, 1);
-      setNoteArr(newArr);
-    }
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: true,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          setActiveDot(false);
+          const newArr = [...noteArr];
+          const index = newArr.indexOf(note);
+          if (index > -1) {
+            newArr.splice(index, 1);
+            console.log(newArr);
+            setNoteArr(() => [...newArr]);
+            console.log(noteArr);
+            setNoteToLocalStorage();
+          }
+          swalWithBootstrapButtons.fire(
+            "Deleted!",
+            "Your file has been deleted.",
+            "success"
+          );
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your imaginary file is safe :)",
+            "error"
+          );
+        }
+      });
 
     setNoteToLocalStorage();
-
-   
   };
 
   return (
@@ -159,7 +227,9 @@ export default function Note() {
           width={{ sm: 200, lg: 400 }}
         >
           <div className="addNote-container">
-            <Button onClick={makeInputNotDisable}>Add New Note</Button>
+            <Button onClick={deleteAllNotes} disabled={noteArr.length == 0}>
+              Delete All Notes
+            </Button>
             <div className="existing-note">
               {noteArr.length == 0 && "No Note Available"}
               {noteArr.map((note: NOTE) => {
@@ -174,6 +244,7 @@ export default function Note() {
                         </h3>
                         <AiFillDelete
                           style={{ color: "red" }}
+                          size={22}
                           onClick={() => removeNote(note)}
                         />
                       </div>
@@ -203,10 +274,14 @@ export default function Note() {
           <div
             style={{ display: "flex", alignItems: "center", height: "100%" }}
           >
+            {activeDot && <BsDot size={30} style={{ color: "red" }} />}
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
                 opened={opened}
-                onClick={() => setOpened((o) => !o)}
+                onClick={() => {
+                  setOpened((o) => !o);
+                  setActiveDot(false);
+                }}
                 size="sm"
                 color={theme.colors.gray[6]}
                 mr="xl"
@@ -225,17 +300,14 @@ export default function Note() {
             placeholder="Add a Note Title"
             required
             value={titleValue}
-            ref={titleFocus}
+            ref={titleRef}
             onChange={(e) => setTitleValue(e.target.value)}
-            disabled={!addNote}
           />
           <textarea
             placeholder="Add a Note Content"
             required
             value={contentValue}
-            ref={contentFocus}
             onChange={(e) => setContentValue(e.target.value)}
-            disabled={!addNote}
           />
           <Button type="submit">Save Note</Button>
           <Button disabled={!updateCurrentNote} onClick={UpdateNote}>

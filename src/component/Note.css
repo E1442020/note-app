@@ -3,14 +3,6 @@
   flex-direction: column;
   gap: 20px;
 }
-.addNote-container.activeNote {
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  padding: 10px;
-  border: none;
-  border-radius: 7px;
-  margin-bottom: 20px;
-  background-color: aqua;
-}
 .addNote-container .existing-note-item {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 10px;
@@ -29,6 +21,7 @@
 .addNote-container .existing-note-item .title-icon h3 {
   word-break: break-word;
   margin-bottom: 10px;
+  font-style: italic;
 }
 .addNote-container .existing-note-item p {
   color: gray;
@@ -47,9 +40,10 @@
   flex-direction: column;
   gap: 20px;
 }
-.preview-app-container form input, .preview-app-container form textarea {
+.preview-app-container form input,
+.preview-app-container form textarea {
   outline: none;
   border: none;
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
   font-size: larger;
 }/*# sourceMappingURL=Note.css.map */
