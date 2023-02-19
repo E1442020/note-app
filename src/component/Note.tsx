@@ -110,7 +110,11 @@ setNoteToLocalStorage()
           console.log(noteArr)
           setNoteToLocalStorage() ;
           setActiveDot(false);
-          setOpened(true)
+          setOpened(true);
+          setTitleValue("");
+          setContentValue("");
+          setUpdateCurrentNote(false);
+
           swalWithBootstrapButtons.fire(
             "Deleted!",
             "Your file has been deleted.",
@@ -132,6 +136,7 @@ setNoteToLocalStorage()
 
   //UpdateNote
   const takeNoteItemToInputToUpdate = (note: NOTE) => {
+    titleRef.current?.focus();
     setUpdateCurrentNote(true);
     setOpened(false);
     setActiveDot(false);
@@ -185,6 +190,9 @@ setNoteToLocalStorage()
             console.log(newArr);
             setNoteArr(() => [...newArr]);
             console.log(noteArr);
+            setTitleValue("");
+            setContentValue("");
+            setUpdateCurrentNote(false);
             setNoteToLocalStorage();
           }
           swalWithBootstrapButtons.fire(
