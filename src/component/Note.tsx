@@ -51,7 +51,7 @@ export default function Note() {
   let setNoteToLocalStorage = () => {
     localStorage.setItem("noteInfo", JSON.stringify(noteArr));
   };
-setNoteToLocalStorage()
+// setNoteToLocalStorage()
   //Add New Note
 
   const addNewNote = () => {
