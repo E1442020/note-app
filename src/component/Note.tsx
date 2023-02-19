@@ -81,9 +81,8 @@ setNoteToLocalStorage()
     setTitleValue("");
     setContentValue("");
   };
-  //   localStorage.clear()
 
-  //Make inputs Not disable
+  //delete All note
 
   const deleteAllNotes = () => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -97,10 +96,10 @@ setNoteToLocalStorage()
     swalWithBootstrapButtons
       .fire({
         title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        text: "You won't be able to revert these!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, delete they!",
         cancelButtonText: "No, cancel!",
         reverseButtons: true,
       })
@@ -117,7 +116,7 @@ setNoteToLocalStorage()
 
           swalWithBootstrapButtons.fire(
             "Deleted!",
-            "Your file has been deleted.",
+            "Your Notes have been deleted.",
             "success"
           );
         } else if (
@@ -126,7 +125,7 @@ setNoteToLocalStorage()
         ) {
           swalWithBootstrapButtons.fire(
             "Cancelled",
-            "Your imaginary file is safe :)",
+            "Your imaginary Notes are safe :)",
             "error"
           );
         }
@@ -197,7 +196,7 @@ setNoteToLocalStorage()
           }
           swalWithBootstrapButtons.fire(
             "Deleted!",
-            "Your file has been deleted.",
+            "Your Note has been deleted.",
             "success"
           );
         } else if (
@@ -206,7 +205,7 @@ setNoteToLocalStorage()
         ) {
           swalWithBootstrapButtons.fire(
             "Cancelled",
-            "Your imaginary file is safe :)",
+            "Your imaginary Note is safe :)",
             "error"
           );
         }
