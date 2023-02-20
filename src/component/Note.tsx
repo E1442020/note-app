@@ -99,7 +99,7 @@ export default function Note() {
         text: "You won't be able to revert these!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete they!",
+        confirmButtonText: "Yes, delete them!",
         cancelButtonText: "No, cancel!",
         reverseButtons: true,
       })
@@ -162,7 +162,9 @@ export default function Note() {
   };
 
   //RemoveNote
-  const removeNote = (note: any) => {
+  const removeNote = (note: any,e:any) => {
+    e.stopPropagation();
+
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -195,7 +197,7 @@ export default function Note() {
             setContentValue("");
             setUpdateCurrentNote(false);
             setNoteToLocalStorage(newArr);
-          }
+            }
           swalWithBootstrapButtons.fire(
             "Deleted!",
             "Your Note has been deleted.",
@@ -243,7 +245,7 @@ export default function Note() {
               {noteArr.map((note: NOTE) => {
                 return (
                   <Fragment key={note.id}>
-                    <div className="existing-note-item">
+                    <div className="existing-note-item" onClick={() => takeNoteItemToInputToUpdate(note)}>
                       <div className="title-icon">
                         <h3>
                           {note.title.length <= 20
@@ -253,10 +255,10 @@ export default function Note() {
                         <AiFillDelete
                           style={{ color: "red" }}
                           size={22}
-                          onClick={() => removeNote(note)}
+                          onClick={(e) => removeNote(note,e)}
                         />
                       </div>
-                      <p onClick={() => takeNoteItemToInputToUpdate(note)}>
+                      <p >
                         {note.content.length <= 30
                           ? note.content
                           : `${note.content.slice(0, 30)}...`}
